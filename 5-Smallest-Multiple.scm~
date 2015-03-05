@@ -1,6 +1,0 @@
-(define (primes k) )
-
-(define (primelist l k n) (cond ((>= k n) l)
-			        ((every (lambda (x) (eq? 0 (remainder n x))) l)     (primelist   (cons n l)  k  (+ n 1)))
-				(else    (primelist  l  k  (+ n 1)))
-))
