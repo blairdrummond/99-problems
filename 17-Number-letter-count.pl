@@ -1,3 +1,7 @@
+
+%============================ GRAMMAR ===================================
+% DCG that creates a list of words and affixes that represent the number
+
 ones(0)     --> [].
 ones(1)     --> [one].
 ones(2)     --> [two].
@@ -21,8 +25,13 @@ tens(X,Y)   --> pre(X), [ty], ones(Y) ,!.
 hund([0,Y,Z]) --> tens(Y,Z), !.
 hund([X,Y,Z]) --> ones(X), [hundred], tens(Y,Z). 
 
-
 zhund(X,Y) :- hund(X,Y1,[]), affixclean(Y1,Y), !.
+
+pre(2) --> [twen]  ,!.
+pre(3) --> [thir]  ,!.
+pre(4) --> [for]   ,!.
+pre(5) --> [fif]   ,!.
+pre(X) --> ones(X) ,!.
 
 affixclean( []     ,  []      ) :- !.
 affixclean( [A|[]] ,  [A]     ) :- !.
@@ -34,20 +43,8 @@ affixclean( [A,B|T], [AB|TS]  ) :- (B == teen; B == ty) -> ( atom_string(A,A1),
 							   ),!.
 affixclean( [A|T], [A|TS] ) :- affixclean(T,TS).
 
+% =============================== END GRAMMAR =======================================
 
-toString(L,L2) :- toStringx(L,L1), foldl(myconcat, L1, '', L2).
-
-toStringx([H|[]], [H1])          :- atom_string(H,H1), !.
-toStringx([H|T],  [H1,' '|T1])   :- atom_string(H,H1), toStringx(T,T1).
-
-
-pre(2) --> [twen]  ,!.
-pre(3) --> [thir]  ,!.
-pre(4) --> [for]   ,!.
-pre(5) --> [fif]   ,!.
-pre(X) --> ones(X) ,!.
-
-num(X,Y)      :- numtolistprime(X,L), chunk(L,Y).
 
 wordnum(X,Z) :- X < 0, X1 is -X, wordnum(X1,Y), string_concat('negative ',Y,Z), !.
 wordnum(X,Z) :- parsenum(X,Y), toString(Y,Z).
@@ -56,16 +53,20 @@ wordnum(X,Z) :- parsenum(X,Y), toString(Y,Z).
 parsenum(X,Y) :- num(X,X1), 
 		 maplist( zhund, X1, X2 ), 
 		 metric(L), 
-		 coallate( L, X2, Y1 ), 
+		 collate( L, X2, Y1 ), 
 		 reverse(Y1,Y2),
 		 flatten1(Y2,Y),
 		 !.
 
-coallate(  _,     [],         []  ).
-coallate( [], [X|XS],     [X|XS]  ).
-coallate( [X|XS], [Y|YS], [X,Y|T] ) :- coallate( XS, YS, T).
+collate(  _,     [],         []  ).
+collate( [], [X|XS],     [X|XS]  ).
+collate( [X|XS], [Y|YS], [X,Y|T] ) :- collate( XS, YS, T).
 
 metric([[], [thousand], [million],[billion], [trillion]]). 
+
+
+num(X,Y)      :- numtolistprime(X,L), chunk(L,Y).
+
 
 chunk( []        , []          ) :- !.
 chunk( [X|[]]    , [[0,0,X]]   ) :- !.
@@ -81,3 +82,15 @@ flatten1([[]|T], T1)        :- flatten1(T,T1).
 flatten1([[X|Y]|T], [X|T1]) :- flatten1([Y|T],T1).
 
 myconcat(X,Y,Z) :- string_concat(Y,X,Z).
+
+
+toString(L,L2) :- toStringx(L,L1), foldl(myconcat, L1, '', L2).
+
+toStringx([H|[]], [H1])          :- atom_string(H,H1), !.
+toStringx([H|T],  [H1,' '|T1])   :- atom_string(H,H1), toStringx(T,T1).
+
+
+% THE ACTUAL QUESTION PART
+
+
+q17(N,ANS) :- wordnum(N,X), string_codes(X,Y), exclude( ==(32), Y, Z), length(Z,ANS).
