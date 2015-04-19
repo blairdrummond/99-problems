@@ -1,4 +1,3 @@
-
 %============================ GRAMMAR ===================================
 % DCG that creates a list of words and affixes that represent the number
 
@@ -31,6 +30,7 @@ pre(2) --> [twen]  ,!.
 pre(3) --> [thir]  ,!.
 pre(4) --> [for]   ,!.
 pre(5) --> [fif]   ,!.
+pre(8) --> [eigh]   ,!.
 pre(X) --> ones(X) ,!.
 
 affixclean( []     ,  []      ) :- !.
@@ -62,7 +62,13 @@ collate(  _,     [],         []  ).
 collate( [], [X|XS],     [X|XS]  ).
 collate( [X|XS], [Y|YS], [X,Y|T] ) :- collate( XS, YS, T).
 
-metric([[], [thousand], [million],[billion], [trillion]]). 
+
+metric([ [],
+    [thousand],      [million],       [billion],           [trillion],      [quadrillion],  [quintillion],
+    [sextillion],    [septillion],    [octillion],         [nonillion],     [decillion],    [undecillion],
+    [duodecillion],  [tredecillion] , [quattuordecillion], [quindecillion], [sexdecillion], [septendecillion],
+    [octodecillion], [novemdecillion],[vigintillion],      [centillion]
+]).
 
 
 num(X,Y)      :- numtolistprime(X,L), chunk(L,Y).
@@ -82,7 +88,6 @@ flatten1([[]|T], T1)        :- flatten1(T,T1).
 flatten1([[X|Y]|T], [X|T1]) :- flatten1([Y|T],T1).
 
 myconcat(X,Y,Z) :- string_concat(Y,X,Z).
-
 
 toString(L,L2) :- toStringx(L,L1), foldl(myconcat, L1, '', L2).
 
