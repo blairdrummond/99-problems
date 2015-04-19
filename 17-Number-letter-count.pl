@@ -22,7 +22,24 @@ hund([0,Y,Z]) --> tens(Y,Z), !.
 hund([X,Y,Z]) --> ones(X), [hundred], tens(Y,Z). 
 
 
-zhund(X,Y) :- hund(X,Y,[]), !.
+zhund(X,Y) :- hund(X,Y1,[]), affixclean(Y1,Y), !.
+
+affixclean( []     ,  []      ) :- !.
+affixclean( [A|[]] ,  [A]     ) :- !.
+affixclean( [A,B|T], [AB|TS]  ) :- (B == teen; B == ty) -> ( atom_string(A,A1), 
+	 						     atom_string(B,B1), 
+						             string_concat(A1,B1,AB1),
+						             atom_string(AB,AB1),
+							     affixclean(T,TS)
+							   ),!.
+affixclean( [A|T], [A|TS] ) :- affixclean(T,TS).
+
+
+toString(L,L2) :- toStringx(L,L1), foldl(myconcat, L1, '', L2).
+
+toStringx([H|[]], [H1])          :- atom_string(H,H1), !.
+toStringx([H|T],  [H1,' '|T1])   :- atom_string(H,H1), toStringx(T,T1).
+
 
 pre(2) --> [twen]  ,!.
 pre(3) --> [thir]  ,!.
@@ -32,8 +49,8 @@ pre(X) --> ones(X) ,!.
 
 num(X,Y)      :- numtolistprime(X,L), chunk(L,Y).
 
-wordnum(X,[negative|Y]) :- X < 0, X1 is -X, parsenum(X1,Y),!.
-wordnum(X,      Y     ) :- parsenum(X,Y).
+wordnum(X,Z) :- X < 0, X1 is -X, wordnum(X1,Y), string_concat('negative ',Y,Z), !.
+wordnum(X,Z) :- parsenum(X,Y), toString(Y,Z).
  
 
 parsenum(X,Y) :- num(X,X1), 
@@ -54,7 +71,6 @@ chunk( []        , []          ) :- !.
 chunk( [X|[]]    , [[0,0,X]]   ) :- !.
 chunk( [X,Y|[]]  , [[0,Y,X]]   ) :- !.
 chunk( [X,Y,Z|T] , [[Z,Y,X]|B] ) :- chunk(T,B).
-
 
 numtolistprime(0,[0])   :- !.
 numtolistprime(X, [X])  :- X < 10, !.
