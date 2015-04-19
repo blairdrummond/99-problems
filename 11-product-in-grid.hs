@@ -5,7 +5,7 @@ import Data.List
 
    diagonal' drop 4 M
 
-   x x x x x x         - - - - x x
+   x x x x x x         - - - - x xs
    x x x x x x         - - - x x x 
    x x x x x x    ->   - - x x x x 
    x x x x x x         - x x x x x
