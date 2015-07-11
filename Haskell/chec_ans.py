@@ -1,9 +1,19 @@
 #!/usr/bin/python3.4
+
+# ./chec_ans.py
+# ./chec_ans.py 01   <- runs 01.hs
+
+
+
+
 import subprocess
 import os
 import re
 import hashlib
 import time as timer
+import sys
+
+
 
 
 
@@ -16,6 +26,9 @@ fmatch = re.compile('^(\d+).*\.hs$')
 i = t = 0
 files = sorted([ (f, str(int(fmatch.match(f).group(1)))) for f in os.listdir() if fmatch.match(f) != None ])
 
+if len(sys.argv) > 1:
+    f = [ x for x in files if sys.argv[1] in x ][0]
+    files = [f]
 
 def run(f):
     start_time=timer.time()
