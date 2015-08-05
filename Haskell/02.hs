@@ -1,5 +1,7 @@
 import Data.List
 
-fib n = takeWhile (<n) $ snd $ unzip $ iterate (\(a,b) -> (b,a+b)) (0,1)
+fibs = 1:1:zipWith (+) fibs (tail fibs) 
 
-main = return $ foldl1' (+) $ filter (\x -> x `mod` 2 == 1) $ fib 4000000
+main = return $ foldl1' (+) $ filter even $ takeWhile (<=4000000) fibs
+       where
+         even x = x `mod` 2 == 0

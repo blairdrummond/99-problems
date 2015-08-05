@@ -4,19 +4,12 @@
 # ./chec_ans.py 01   <- runs 01.hs
 
 
-
-
 import subprocess
 import os
 import re
 import hashlib
 import time as timer
 import sys
-
-
-
-
-
 
 with open('answers.txt') as f:
     ans = dict(re.findall('(.*), (.*)', f.read()))
@@ -55,6 +48,4 @@ for (f,num) in files:
     t += 1
 
 print( 'Scored {}/{}'.format(str(i),str(t)) )
-
-
 
