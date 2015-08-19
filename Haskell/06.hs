@@ -1,7 +1,9 @@
+#!/usr/bin/env runhaskell
+   
 import Data.List 
 
-difference :: Integer  -> Integer
-difference n =  (foldl' (+) 0 [1..n])^2 - (foldl' (\ x y -> x + y^2) 0 [1..n])
+difference :: Int  -> Int
+difference n = (sum [1..n])^2 - (foldl' (\ x y -> x + y^2) 0 [1..n])
 
-
-main = return $ difference 100
+main :: IO ()
+main = print $ difference 100

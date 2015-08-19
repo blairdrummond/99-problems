@@ -10,5 +10,5 @@
 (define (find-recurse a b) (if (palindrome (* a b)) 
 			      (* a b)  
 			      (if (< a b)   
-				  (find-recurse a       (- b 1) )  
-				  (find-recurse (- a 1) b       ))))
+				  (find-recurse    a    (- b 1))  
+				  (find-recurse (- a 1)    b  ))))
