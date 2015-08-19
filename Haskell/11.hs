@@ -31,5 +31,5 @@ main :: IO ()
 main = do
   text    <- readFile "numbers_11.txt"
   grids   <- return $ map words $ lines text
-  gridi   <- return $ (map.map) (\x -> read x :: Integer) grids
+  gridi   <- return $ (map.map) (\x -> read x :: Int) grids
   print . maximum $ map product $ map_to gridi (chunks gridi 4)

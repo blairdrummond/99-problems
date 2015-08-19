@@ -2,9 +2,8 @@
 
 sum_digits :: Integral a => a -> a
 sum_digits 0 = 0
-sum_digits n = 1 `seq` (r + (sum_digits q))
-               where
-                 (q,r) = n `quotRem` 10
+sum_digits n = let (q,r) = n `quotRem` 10 in
+               r + (sum_digits q)
 
 main :: IO ()
-main = print $ sum_digits (2^1000)
+main = print $ sum_digits (2^1000 :: Integer)
