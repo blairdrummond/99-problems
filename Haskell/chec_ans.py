@@ -30,8 +30,7 @@ files     = sorted(filter(all, zip(directory, map(grab, directory))))
 
 if len(sys.argv) > 1:
     # just one
-    f = [ x for x in files if sys.argv[1] in x ][0]
-    files = [f]
+    files = [ x for x in files if sys.argv[1] in x ]
 """ end select files to run """
 
     
@@ -55,7 +54,12 @@ def run(f):
 
 
 passed = total = 0
+
+max_len = max(map(len, list(zip(*files))[0]))
+
 for (f,num) in files:
+    spacer = ' '*(max_len - len(f))
+
     # might throw in a ^C if it takes too long ...
     try:
         res, time, compiled = run(f)
@@ -71,12 +75,12 @@ for (f,num) in files:
     md5 = hashlib.md5(res.encode('utf-8')).hexdigest()
     
     if ans[num] == md5:
-        print('PASSED %s  ran in %f  compiled in %f' % (f, time, compiled))
+        print('PASSED %s %s ran in %f  compiled in %f' % (f[:-3], spacer, time, compiled))
         print()
         passed += 1
 
     else:
-        print('FAILED %s  ran in %f  compiled in %s' % (f, time, compiled))
+        print('FAILED %s %s ran in %f  compiled in %s' % (f[:-3], spacer, time, compiled))
         print()
         
     total += 1
