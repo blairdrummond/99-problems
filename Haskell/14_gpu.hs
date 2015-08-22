@@ -13,7 +13,7 @@ import Data.Array.Accelerate.Interpreter (run)
 --import Data.Array.Accelerate.CUDA        (run)
 
 main :: IO ()
-main = print $ P.fst $ maximumBy (comparing P.snd) (collatz 100)
+main = print $ P.fst $ maximumBy (comparing P.snd) (collatz 1000000)
        
 collatz :: Int64 -> [(Int64, Int)]
 collatz n = toList $ run $ A.map collatz' (use (fromList (Z:. P.fromIntegral n) [1..n] :: Vector Int64))
