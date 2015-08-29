@@ -40,12 +40,12 @@ smallerLists :: Integral a => a -> [[a]]
 smallerLists n = foldl mod8 [[],[],[],[],[],[],[],[]] [1..n]
                  where
                    mod8 [a,b,c,d,e,f,g,h] x
-                       | r == 0 = [x:a ,  b  ,  c  ,  d  ,  e  ,  f  ,  g  ,  h]
-                       | r == 1 = [ a  , x:b ,  c  ,  d  ,  e  ,  f  ,  g  ,  h]
-                       | r == 2 = [ a  ,  b  , x:c ,  d  ,  e  ,  f  ,  g  ,  h]
-                       | r == 3 = [ a  ,  b  ,  c  , x:d ,  e  ,  f  ,  g  ,  h]
-                       | r == 4 = [ a  ,  b  ,  c  ,  d  , x:e ,  f  ,  g  ,  h]
-                       | r == 5 = [ a  ,  b  ,  c  ,  d  ,  e  , x:f ,  g  ,  h]
-                       | r == 6 = [ a  ,  b  ,  c  ,  d  ,  e  ,  f  , x:g ,  h]
-                       | r == 7 = [ a  ,  b  ,  c  ,  d  ,  e  ,  f  ,  g  , x:h]
-                       where r = x `rem` 8
+                        | r == 0 = [x:a, b , c , d ,  e  ,  f  ,  g  ,  h]
+                        | r == 1 = [ a ,x: , c , d ,  e  ,  f  ,  g  ,  h]
+                        | r == 2 = [ a , b ,x: , d ,  e  ,  f  ,  g  ,  h]
+                        | r == 3 = [ a , b ,  c  , x:d ,  e  ,  f  ,  g  ,  h]
+                        | r == 4 = [ a  ,  b  ,  c  ,  d  , x:e ,  f  ,  g  ,  h]
+                        | r == 5 = [ a  ,  b  ,  c  ,  d  ,  e  , x:f ,  g  ,  h]
+                        | r == 6 = [ a  ,  b  ,  c  ,  d  ,  e  ,  f  , x:g ,  h]
+                        | r == 7 = [ a  ,  b  ,  c  ,  d  ,  e  ,  f  ,  g  , x:h]
+                        where r = x `rem` 8

@@ -5,7 +5,7 @@ data Chain = Chain { best_path :: [Int] }
 
 instance Ord Chain where
     Chain a `compare` Chain b = (sum a) `compare` (sum b)
-                                
+
 instance Eq Chain where
     Chain a == Chain b = (sum a) == (sum b)
 
@@ -13,7 +13,7 @@ path :: [[Int]] -> Chain
 path triangle = head $ foldr row l (init triangle)
     where
       l = [ Chain [x] | x <- last triangle]
-          
+
 row :: [Int] -> [Chain] -> [Chain]
 row heads branches = zipWith (\x y-> Chain (x : (best_path y))) -- Add next row to beginning
                      heads $
@@ -21,7 +21,7 @@ row heads branches = zipWith (\x y-> Chain (x : (best_path y))) -- Add next row 
                            max
                            (init branches) --left
                            (tail branches) --right
-                           
+
 main :: IO ()
 main = do
   triangle <- readFile "numbers_18.txt"
