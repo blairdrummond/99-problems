@@ -3,7 +3,7 @@
 import Data.Ord
 import Data.List
 
-                          
+
 chain :: Integral a => a -> (a, Int)
 chain n = (n, (length $ takeWhile (>1) $ iterate collatz' n))
 
@@ -14,8 +14,7 @@ collatz' n
     where
       (q,r) = quotRem n 2
 
-              
-main :: IO () 
+main :: IO ()
 main = print $ test2 (1000000 :: Integer)
 
 test2 :: Integral a => a -> a
